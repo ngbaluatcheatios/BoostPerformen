@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.6;
+        }
+        
+        .particle:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .particle:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+        
+        .particle:nth-child(3) {
+            top: 80%;
+            left: 40%;
+            animation-delay: 4s;
+        }
+        
+        .particle:nth-child(4) {
+            top: 30%;
+            left: 70%;
+            animation-delay: 6s;
+        }
+        
+        .particle:nth-child(5) {
+            top: 70%;
+            left: 10%;
+            animation-delay: 1s;
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+        
+        .header {
+            padding: 2rem 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideDown 1s ease-out;
+        }
+        
+        .logo-icon {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite;
+        }
+        
+        .logo-text h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.2rem;
+        }
+        
+        .logo-text span {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        
+        .menu {
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+            animation: slideLeft 1s ease-out;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-item:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+        
+        .menu-item.active {
+            background: linear-gradient(45deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 255, 0.2));
+            border-left: 3px solid #00ff88;
+        }
+        
+        .menu-icon {
+            font-size: 1.2rem;
+            color: #00ff88;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover .menu-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .menu-indicator {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            transition: height 0.3s ease;
+        }
+        
+        .menu-item.active .menu-indicator {
+            height: 60%;
+        }
+        
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .content-area {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .content-section {
+            display: none;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .content-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            color: #00ff88;
+        }
+        
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-info p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .settings-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .setting-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .setting-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked+.slider {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+        }
+        
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+        
+        .tool-card i {
+            font-size: 3rem;
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .tool-card p {
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tool-btn {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+        
+        .mods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .mod-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .mod-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+        }
+        
+        .mod-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #666;
+        }
+        
+        .mod-status.active {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        
+        .mod-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .mod-card p {
+            color: #888;
+            margin-bottom: 1rem;
+        }
+        
+        .mod-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mod-toggle.active {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border-color: transparent;
+        }
+        
+        .mod-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-avatar {
+            font-size: 5rem;
+            color: #00ff88;
+        }
+        
+        .profile-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info p {
+            color: #00ccff;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat span {
+            display: block;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat strong {
+            font-size: 1.5rem;
+            color: #00ff88;
+        }
+        
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .help-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .help-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 204, 255, 0.2);
+        }
+        
+        .help-card i {
+            font-size: 3rem;
+            color: #00ccff;
+            margin-bottom: 1rem;
+        }
+        
+        .help-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .help-card p {
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
+        
+        .help-btn {
+            background: linear-gradient(45deg, #00ccff, #0066ff);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .help-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #888;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            .menu {
+                min-width: auto;
+                width: 100%;
+            }
+            .logo {
+                flex-direction: column;
+                text-align: center;
+            }
+            .logo-text h1 {
+                font-size: 2rem;
+            }
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .dashboard-grid,
+            .tools-grid,
+            .mods-grid,
+            .help-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .click-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .click-effect::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        
+        .click-effect.clicked::before {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="bg-animation">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Baluat Tweaks Universe</h1>
+                        <span>Mod Interface</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <nav class="menu">
+                <div class="menu-item" data-section="dashboard">
+                    <div class="menu-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <span>Dashboard</span>
+                    <div class="menu-indicator"></div>
+                </div>
+
+                <div class="menu-item" data-section="settings">
+                    <div class="menu-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <span>Settings</span>
+                    <div class="menu-indicator"></div>
+                </div>
+
+                <div class="menu-item" data-section="tools">
+                    <div class="menu-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <span>Tools</span>
+                    <div class="menu-indicator"></div>
+                </div>
+
+                <div class="menu-item" data-section="mods">
+                    <div class="menu-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <span>Mods</span>
+                    <div class="menu-indicator"></div>
+                </div>
+
+                <div class="menu-item" data-section="profile">
+                    <div class="menu-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span>Profile</span>
+                    <div class="menu-indicator"></div>
+                </div>
+
+                <div class="menu-item" data-section="help">
+                    <div class="menu-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <span>Help</span>
+                    <div class="menu-indicator"></div>
+                </div>
+            </nav>
+            <div class="content-area">
+                <section class="content-section active" id="dashboard">
+                    <h2>Dashboard</h2>
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>1,234</h3>
+                                <p>Downloads</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>567</h3>
+                                <p>Users</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>4.8</h3>
+                                <p>Rating</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section" id="settings">
+                    <h2>Settings</h2>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <span>Theme</span>
+                            <select class="setting-select">
+                                <option>Dark</option>
+                                <option>Light</option>
+                                <option>Auto</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <span>Language</span>
+                            <select class="setting-select">
+                                <option>Vietnamese</option>
+                                <option>English</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <span>Notifications</span>
+                            <label class="toggle">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section" id="tools">
+                    <h2>Tools</h2>
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <i class="fas fa-rocket"></i>
+                            <h3>Boost Performance</h3>
+                            <p>Optimize your system</p>
+                            <button class="tool-btn">Run</button>
+                        </div>
+                        <div class="tool-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Security Scan</h3>
+                            <p>Check for vulnerabilities</p>
+                            <button class="tool-btn">Scan</button>
+                        </div>
+                        <div class="tool-card">
+                            <i class="fas fa-broom"></i>
+                            <h3>Clean Cache</h3>
+                            <p>Clear temporary files</p>
+                            <button class="tool-btn">Clean</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section" id="mods">
+                    <h2>Mods</h2>
+                    <div class="mods-grid">
+                        <div class="mod-card">
+                            <div class="mod-status active"></div>
+                            <h3>Enhanced UI</h3>
+                            <p>Improved user interface</p>
+                            <button class="mod-toggle active">Enabled</button>
+                        </div>
+                        <div class="mod-card">
+                            <div class="mod-status"></div>
+                            <h3>Performance Boost</h3>
+                            <p>Faster loading times</p>
+                            <button class="mod-toggle">Disabled</button>
+                        </div>
+                        <div class="mod-card">
+                            <div class="mod-status"></div>
+                            <h3>Custom Themes</h3>
+                            <p>Additional color schemes</p>
+                            <button class="mod-toggle">Disabled</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section" id="profile">
+                    <h2>Profile</h2>
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h3>Ngbaluat Aka BaluatTweaks</h3>
+                            <p>Premium User</p>
+                            <div class="profile-stats">
+                                <div class="stat">
+                                    <span>Mods Created</span>
+                                    <strong>12</strong>
+                                </div>
+                                <div class="stat">
+                                    <span>Downloads</span>
+                                    <strong>1,234</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section" id="help">
+                    <h2>Help & Support</h2>
+                    <div class="help-grid">
+                        <div class="help-card">
+                            <i class="fas fa-book"></i>
+                            <h3>Documentation</h3>
+                            <p>Learn how to use all features</p>
+                            <button class="help-btn">View Docs</button>
+                        </div>
+                        <div class="help-card">
+                            <i class="fas fa-comments"></i>
+                            <h3>Community</h3>
+                            <p>Join our Discord server</p>
+                            <button class="help-btn">Join</button>
+                        </div>
+                        <div class="help-card">
+                            <i class="fas fa-envelope"></i>
+                            <h3>Contact</h3>
+                            <p>Get in touch with support</p>
+                            <button class="help-btn">Contact</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; Nguyễn Bá Luật</p>
+        </footer>
+    </div>
+
+    <script>
+        const menuItems = document.querySelectorAll('.menu-item');
+        const contentSections = document.querySelectorAll('.content-section');
+        const toolButtons = document.querySelectorAll('.tool-btn');
+        const helpButtons = document.querySelectorAll('.help-btn');
+        const modToggles = document.querySelectorAll('.mod-toggle');
+        document.addEventListener('DOMContentLoaded', function() {
+            showWelcomeNotification();
+            setupMenuNavigation();
+            setupInteractiveButtons();
+            setupModToggles();
+            addClickEffects();
+        });
+
+        function showWelcomeNotification() {
+            Swal.fire({
+                title: 'Chào mừng đến với menu của Nguyen Ba Luat!',
+                text: 'Khám phá các tính năng tuyệt vời của giao diện mod này!',
+                icon: 'success',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                confirmButtonColor: '#00ff88',
+                showConfirmButton: true,
+                confirmButtonText: 'Bắt đầu',
+                timer: 5000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'swal-custom-popup',
+                    title: 'swal-custom-title',
+                    content: 'swal-custom-content'
+                }
+            });
+        }
+
+        function setupMenuNavigation() {
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    menuItems.forEach(menuItem => {
+                        menuItem.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    contentSections.forEach(contentSection => {
+                        contentSection.classList.remove('active');
+                    });
+                    const targetSection = document.getElementById(section);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                    showSectionNotification(section);
+                });
+            });
+        }
+
+        function showSectionNotification(section) {
+            const sectionNames = {
+                'dashboard': 'Bảng điều khiển',
+                'settings': 'Cài đặt',
+                'tools': 'Công cụ',
+                'mods': 'Mods',
+                'profile': 'Hồ sơ',
+                'help': 'Trợ giúp'
+            };
+
+            const sectionName = sectionNames[section] || section;
+
+            Swal.fire({
+                title: `Đã chuyển đến ${sectionName}`,
+                text: `Bạn đang xem phần ${sectionName}`,
+                icon: 'info',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                confirmButtonColor: '#00ff88',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                    popup: 'swal-toast-popup'
+                }
+            });
+        }
+
+        function setupInteractiveButtons() {
+            toolButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const toolName = this.parentElement.querySelector('h3').textContent;
+
+                    Swal.fire({
+                        title: `Chạy ${toolName}?`,
+                        text: `Bạn có muốn chạy công cụ ${toolName} không?`,
+                        icon: 'question',
+                        background: '#1a1a2e',
+                        color: '#ffffff',
+                        showCancelButton: true,
+                        confirmButtonColor: '#00ff88',
+                        cancelButtonColor: '#ff6b6b',
+                        confirmButtonText: 'Chạy',
+                        cancelButtonText: 'Hủy',
+                        customClass: {
+                            popup: 'swal-custom-popup'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            runTool(toolName);
+                        }
+                    });
+                });
+            });
+            helpButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const helpType = this.parentElement.querySelector('h3').textContent;
+
+                    Swal.fire({
+                        title: helpType,
+                        text: `Bạn đã chọn ${helpType}. Tính năng này sẽ được triển khai sớm!`,
+                        icon: 'info',
+                        background: '#1a1a2e',
+                        color: '#ffffff',
+                        confirmButtonColor: '#00ccff',
+                        confirmButtonText: 'Đã hiểu',
+                        customClass: {
+                            popup: 'swal-custom-popup'
+                        }
+                    });
+                });
+            });
+        }
+
+        function runTool(toolName) {
+            Swal.fire({
+                title: `Đang chạy ${toolName}...`,
+                text: 'Vui lòng chờ trong giây lát',
+                icon: 'info',
+                background: '#1a1a2e',
+                color: '#ffffff',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            setTimeout(() => {
+                Swal.fire({
+                    title: 'Hoàn thành!',
+                    text: `${toolName} đã được chạy thành công!`,
+                    icon: 'success',
+                    background: '#1a1a2e',
+                    color: '#ffffff',
+                    confirmButtonColor: '#00ff88',
+                    confirmButtonText: 'Tuyệt vời!',
+                    customClass: {
+                        popup: 'swal-custom-popup'
+                    }
+                });
+            }, 2000);
+        }
+
+        function setupModToggles() {
+            modToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const modName = this.parentElement.querySelector('h3').textContent;
+                    const isActive = this.classList.contains('active');
+                    const modStatus = this.parentElement.querySelector('.mod-status');
+
+                    if (isActive) {
+                        this.classList.remove('active');
+                        this.textContent = 'Disabled';
+                        modStatus.classList.remove('active');
+
+                        Swal.fire({
+                            title: 'Mod đã tắt',
+                            text: `${modName} đã được tắt`,
+                            icon: 'warning',
+                            background: '#1a1a2e',
+                            color: '#ffffff',
+                            confirmButtonColor: '#ff6b6b',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                    } else {
+                        this.classList.add('active');
+                        this.textContent = 'Enabled';
+                        modStatus.classList.add('active');
+
+                        Swal.fire({
+                            title: 'Mod đã bật',
+                            text: `${modName} đã được kích hoạt`,
+                            icon: 'success',
+                            background: '#1a1a2e',
+                            color: '#ffffff',
+                            confirmButtonColor: '#00ff88',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                    }
+                });
+            });
+        }
+
+        function addClickEffects() {
+            const interactiveElements = document.querySelectorAll('.menu-item, .tool-btn, .help-btn, .mod-toggle, .stat-card, .tool-card, .help-card');
+
+            interactiveElements.forEach(element => {
+                element.classList.add('click-effect');
+
+                element.addEventListener('click', function(e) {
+                    this.classList.add('clicked');
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 600);
+                    createRipple(e, this);
+                });
+            });
+        }
+
+        function createRipple(event, element) {
+            const ripple = document.createElement('span');
+            const rect = element.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+
+            element.appendChild(ripple);
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(0, 255, 136, 0.3);
+        pointer-events: none;
+        transform: scale(0);
+        animation: ripple-animation 0.6s linear;
+    }
+    
+    @keyframes ripple-animation {
+        to {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+    
+    .swal-custom-popup {
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .swal-toast-popup {
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+`;
+        document.head.appendChild(rippleStyle);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const dashboard = document.querySelector('[data-section="dashboard"]');
+                if (dashboard) {
+                    dashboard.click();
+                }
+            }
+        });
+
+        document.documentElement.style.scrollBehavior = 'smooth';
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                console.log('Window resized');
+            }, 250);
+        });
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+        console.log('%c🎉 Chào mừng đến với Bá Luật Mod Interface! 🎉', 'color: #00ff88; font-size: 16px; font-weight: bold;');
+        console.log('%cGiao diện được phát triển với ❤️ bởi Bá Luật', 'color: #00ccff; font-size: 12px;');
+    </script>
+</body>
+
+</html>
